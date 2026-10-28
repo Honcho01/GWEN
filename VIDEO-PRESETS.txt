@@ -1,0 +1,44 @@
+GWEN™ — VIDEO PRESETS AND APP SETTINGS
+
+REMOTE PLAY
+Go to Settings > Video. The preset menu includes:
+- Smooth / 720p / 60: lighter starting point for weaker PCs/networks.
+- High detail / 1080p / 60 / 20 Mbps: more detail and higher network/decoder load.
+You can also set resolution, frame rate, bitrate and decoder individually.
+Remote presets are editable during a session, but apply to the next connection.
+Disconnect normally, wait for cleanup, then reconnect to apply a stream change.
+
+PLAYSTATION CLOUD PLAY
+Use Cloud Play's quality selector, or Settings > Video > Cloud Play preset:
+- Automatic: starts from 720p / 8 Mbps and learns a request for a later connection.
+- 720p / 60 / 8 Mbps: lighter request.
+- 1080p / 60 / Balanced / 12 Mbps: moderate 1080p request.
+- 1080p / 60 / High detail / 20 Mbps: higher detail request.
+- 1080p / 60 / Ultra detail / 40 Mbps: highest available request, higher load.
+Stop the Cloud game, choose a preset and reconnect. A higher request does not
+guarantee a higher delivered bitrate or frame rate; Sony manages live delivery.
+Do not select a high bitrate just because an internet speed test is fast.
+If motion stutters, try Automatic or 720p/8 Mbps and compare the same scene.
+
+PICTURE ADJUSTMENTS — APPLY IMMEDIATELY
+Settings > Picture: brightness, contrast, saturation, gamma and sharpness.
+Auto GPU processing is needed for these effects. Software/fallback shows the
+original picture. Sharpness emphasizes edges; too much can add halos/noise.
+Use Reset video adjustments to return to the app defaults.
+Video framing: Fill crops to fill the area; Fit shows the whole picture.
+
+APPEARANCE AND MOTION
+Settings > Appearance: choose a theme/finish and use the preview before saving.
+Customize Appearance changes supported logo/artwork/text fields.
+Animation Quality: Off, Low, Standard or Ultra. Motion respects reduced-motion
+preferences and pauses during native playback/recording to preserve resources.
+Home website highlights are optional and stop while playing/away from Home.
+
+RECORDING
+Settings > Recording: 30 FPS is the lighter choice; 60 FPS adds encoder load.
+Ctrl+R toggles recording. A busy recorder may skip capture data rather than
+make gameplay wait. Recording does not increase the incoming stream quality.
+
+XBOX / NETFLIX / PLEX
+Embedded providers manage their own stream-quality settings and restrictions.
+GWEN™'s native PlayStation picture/bitrate controls do not override those pages.

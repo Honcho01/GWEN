@@ -1,0 +1,9 @@
+UserData/
+Backups/
+Recordings/
+Reports/
+*.dpapi
+*.p12
+*.mobileprovision
+*Private*
+*PASSWORD*

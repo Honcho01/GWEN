@@ -1,0 +1,85 @@
+﻿GWEN™ — HOW TO USE
+Version 1.16.2 Public Beta · Windows 10/11 x64
+
+1. INSTALL AND OPEN
+Run GWEN-Setup-1.16.2-Public-Beta.exe. Install for your Windows user and open
+the GWEN™ desktop/Start menu shortcut. Python is bundled; no coding is needed.
+This is independent from the creator's developer installation. No accounts,
+pairings, movie history or recordings are supplied.
+
+2. PLAY FROM YOUR OWN PS5
+Start on the same home network as your PS5. In Consoles, edit the initial
+"My PS5" placeholder or add your own console. Replace the example IP with
+your PS5's actual IPv4 address (PS5 Settings > Network > Connection Status).
+Enable Remote Play on PS5 (Settings > System > Remote Play).
+Choose Pair this console in GWEN™, then get a fresh 8-digit Link/Pair Device
+PIN from your PS5. Enter that PIN and the activated PS5 user's Account-ID.
+Account-ID is not your PSN username, email or password. Choose the format
+matching your ID: Base64, Decimal or Hexadecimal. If you do not know your
+Account-ID, obtain it through a trusted account-ID method before pairing;
+this version does not provide an automatic Account-ID lookup.
+After pairing, select PlayStation > Remote Play and Connect/Play.
+Pair each PS5 separately. Saved pairing stays on this Windows user account.
+Standard PS5 Remote Play does not need a jailbreak. PS4 support is unverified.
+
+3. CLOUD PLAY
+PlayStation > Cloud Play > Connect PlayStation. Sign in yourself on Sony's
+page, then choose Use this account. Load the library, select a supported game
+and Play. Eligible Sony account, subscription/game access and supported service
+availability are required. GWEN™ does not unlock paid games or change regions.
+Xbox > Cloud Play uses Microsoft's embedded player. Sign in there and use
+your own eligible access. Xbox Remote Play needs your own supported console.
+Microsoft Edge WebView2 Runtime is required for embedded provider pages:
+https://developer.microsoft.com/microsoft-edge/webview2/
+
+4. CONTROLLERS
+Connect your controller to Windows by USB or Bluetooth, then use Settings > Controllers to
+select it and enable game input. Battery values depend on device/driver data.
+DualSense touchpad and supported feedback use existing controller support.
+Not all controllers supply an exact battery percentage or software power-off.
+A controller that is physically off must be turned on with its own button.
+D-pad/left stick navigate GWEN™ menus when controller navigation is enabled.
+During native PS gameplay, hold L3+R3 for 0.7 seconds to open the GWEN™ menu.
+
+5. PICTURE, SOUND AND FULLSCREEN
+See VIDEO-PRESETS.txt. Double-click a native PlayStation picture to toggle
+picture fullscreen. Esc exits supported fullscreen views. Settings > Sound
+selects the output device; volume and mute are also in the playback controls.
+
+6. MOVIES
+Movies > Your Library > Add movies/Add folder. Select your own Windows-
+accessible files or a shared folder. Continue watching retains local progress.
+Metadata search can match titles/cover art from Wikipedia; check/correct matches.
+Netflix/Plex tabs open their official services and require your own account.
+Provider DRM/browser support and codecs determine actual playback availability.
+This is not yet a Mac media server or a TV app.
+
+7. RECORDING
+Ctrl+R starts/stops recording of native PS Remote/Cloud or Your Library movies.
+The header Record button also works. Settings > Recording selects folder/FPS.
+Start with 30 FPS for lower load. Browser Xbox/Netflix/Plex capture is unavailable.
+The capture uses the decoded source; window size/fullscreen does not frame it.
+Wait for "Saved" before exiting. Record only material you are permitted to record.
+
+8. ERRORS, REPORTS, UPDATES AND CREDITS
+A connection-error card offers guidance, Technical details and manual Retry.
+Retry waits for cleanup and retries the failed console/game once; it is not
+an automatic reconnection loop. Sign-in/access problems need their guidance action.
+Settings > Diagnostics > Save support report exports one ZIP. Save while the
+issue is happening, before disconnecting. Open report folder locates the ZIP.
+Updates > Credits & acknowledgements lists project and third-party credits.
+Updates > Install update file accepts trusted public-channel .gwen-update.zip
+packages. Check for updates scans the local Updates folder; there is no hosted
+automatic installation. Daily release checks use the configured HTTPS feed after publication. Developer-channel packages are intentionally rejected.
+After a public update, Restart to apply. Roll back becomes available once a
+previous public version exists. Saved data stays in UserData across versions.
+
+9. UNINSTALL
+Close GWEN™ and use Windows Settings > Apps > GWEN™ Public Beta > Uninstall.
+Your UserData, reports, backups and recordings are retained. Back up that data
+before removing it yourself; credentials are Windows-user-bound.
+
+STATUS
+This is a public beta, not a claim that every PC/network/provider is verified.
+Remote Play needs a route to your PS5. Switching a PC to a separate hotspot
+does not by itself create a route to a home-only PS5 address.

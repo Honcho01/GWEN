@@ -1,0 +1,55 @@
+﻿GWEN™ — Credits & acknowledgements
+
+GWEN™ Project · Product direction, visual identity, custom interface and application integration. Development assistance: OpenAI Codex. GWEN™ is an independent project; upstream protocol engines and libraries are credited below.
+
+Remote Play foundations
+chiaki-py / Rothen and contributors; chiaki-ng contributors. Protocol, pairing, decryption and media interoperability. AGPL-3.0-only; preserve upstream notices.
+https://github.com/Rothen/chiaki-py
+
+PlayStation Cloud interoperability
+chiaki-ngc / tertiumndatur and contributors. Native cloud interoperability foundation; GWEN™ supplies its interface and adapters. AGPL-3.0-only with the upstream OpenSSL additional permission.
+https://github.com/tertiumndatur/chiaki-ngc
+
+Desktop interface
+Riverbank Computing: PyQt6. The Qt Company and Qt contributors: Qt. Their GPL/commercial and component-specific licenses remain in force.
+https://www.riverbankcomputing.com/software/pyqt/
+
+Python runtime
+Python Software Foundation and Python contributors. PSF license and bundled third-party notices.
+https://www.python.org/
+
+Video, audio and recording
+FFmpeg developers; PyAV contributors. FFmpeg/component licenses and PyAV BSD notices are retained. Includes hardware encoding where available and software fallback.
+https://pyav.org/
+
+Controllers and native dependencies
+SDL contributors, hidapi contributors, Xiph.Org / Opus contributors, OpenSSL Project, curl contributors, nanopb, Jerasure, GF-Complete and other native dependency authors. Complete bundled notices are in licenses/native-dependencies and the corresponding source tree.
+https://www.libsdl.org/
+
+Python libraries
+NumPy, Requests, urllib3, Pydantic/pydantic-core, PyCryptodomeX, typing-extensions, certifi, charset-normalizer, idna and their contributors. Version and license records remain in the bundled package metadata.
+https://numpy.org/
+
+Additional bundled notices and build-source acknowledgements
+Abseil, FFTW, fmt, glslang, json-c, Little CMS, libevent, libssh2, miniupnpc, pkgconf, Protocol Buffers, shaderc, SpeexDSP, SPIR-V Headers/Tools, utf8-range, Vulkan Headers/Loader, zlib, vcpkg CMake/Meson helpers, annotated-types, typing-inspection and their contributors. The source/license inventory can include build-time dependencies as well as runtime libraries; each retains its own notices.
+
+Embedded web experiences
+Microsoft: Edge WebView2 and its SDK. Sony, Microsoft, Netflix and Plex operate their own services, accounts and supported playback features.
+https://developer.microsoft.com/microsoft-edge/webview2/
+
+Icons
+Font Awesome Free / Fonticons, Inc. Brand icons are credited under CC BY 4.0; other components retain their stated licenses.
+https://fontawesome.com/license/free
+
+Movie information
+Wikipedia and Wikimedia contributors. Metadata and cover images are fetched only when requested by the library feature. Each article/image retains its own attribution and terms; source links are kept with matched movies.
+https://www.wikipedia.org/
+
+Artwork and trademarks
+PlayStation/PS5/DualSense and related marks/product images: Sony Interactive Entertainment. Xbox and related marks/product imagery: Microsoft. User-supplied reference artwork and the GWEN™ identity retain their respective owners’ rights. Product imagery is not covered by GWEN™’s software license. Artwork provenance is recorded in assets/official-ui. No affiliation or endorsement is claimed.
+
+Installer
+Inno Setup — Jordan Russell, Martijn Laan and contributors. The installer compiler is a build tool, not GWEN™ application code.
+https://jrsoftware.org/
+
+Source & licenses: Custom application/launcher source is AGPL-3.0-only, as specified by the project’s existing notices. Full bundled application/native source, build instructions, dependency notices and license records are included under Source and licenses. Individual third-party and artwork licenses remain separate. Credits do not replace license texts. This public beta does not promise support for every controller, codec, network or provider.
