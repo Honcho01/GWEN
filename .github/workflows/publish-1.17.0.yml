@@ -39,8 +39,8 @@ jobs:
               return opener.open(req,timeout=120)
           rows=api('/releases?per_page=100')
           transfer=[r for r in rows if r['draft'] and r['name']=='GWEN 1.17.0 Verified Transfer']
-          target=[r for r in rows if r['draft'] and r['name']=='GWENâ„¢ 1.17.0 â€” Public Beta & Developer Update']
-          if len(transfer)!=1 or len(target)!=1:raise RuntimeError('Expected exactly one transfer and target draft')
+          target=[r for r in rows if r['draft'] and '1.17.0' in r['name'] and 'Public Beta' in r['name'] and 'Developer Update' in r['name']]
+          if len(transfer)!=1 or len(target)!=1:raise RuntimeError('Expected one transfer/target draft; got '+str((len(transfer),len(target)))+'; release titles: '+str([(r['name'],r['draft']) for r in rows]))
           transfer,target=transfer[0],target[0]
           assets={r['name']:r for r in api('/releases/'+str(transfer['id'])+'/assets?per_page=100')}
           with get_asset(assets['transfer-manifest-v2.json']) as r:manifest=json.loads(r.read(65537))
