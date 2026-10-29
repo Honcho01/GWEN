@@ -1,0 +1,93 @@
+name: Publish verified GWEN 1.17.0
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  publish:
+    if: github.repository == 'Honcho01/GWEN' && github.ref == 'refs/heads/main' && github.actor == 'Honcho01'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GWEN_MANIFEST_SHA256: 91987ef71485b354f694d8971b0a50fdeeafd137e9b319ab6f6ea5edc683b3a8
+    steps:
+      - name: Verify all transfer files, publish release, update channel feeds
+        shell: python
+        run: |
+          """Manual repository-owned workflow; only verified allowlisted release files."""
+          import os,json,urllib.request,urllib.parse,hashlib,pathlib,base64
+          if os.environ.get('GITHUB_REPOSITORY')!='Honcho01/GWEN' or os.environ.get('GITHUB_ACTOR')!='Honcho01':raise SystemExit('Unexpected release owner')
+          repo='Honcho01/GWEN';version='1.17.0'
+          token=os.environ['GH_TOKEN']
+          headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','User-Agent':'GWEN-verified-release'}
+          class Redirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self,req,fp,code,msg,hdrs,newurl):
+                  u=urllib.parse.urlsplit(newurl)
+                  if u.scheme!='https' or u.hostname not in ('api.github.com','release-assets.githubusercontent.com','objects.githubusercontent.com'):raise RuntimeError('Unsafe release redirect')
+                  new=super().redirect_request(req,fp,code,msg,hdrs,newurl)
+                  if u.hostname!='api.github.com':new.remove_header('Authorization')
+                  return new
+          opener=urllib.request.build_opener(Redirect())
+          def api(path,method='GET',data=None):
+              req=urllib.request.Request('https://api.github.com/repos/'+repo+path,headers=headers,method=method,data=json.dumps(data).encode() if data is not None else None)
+              with opener.open(req,timeout=90) as response:
+                  raw=response.read();return json.loads(raw) if raw else None
+          def get_asset(asset):
+              req=urllib.request.Request('https://api.github.com/repos/'+repo+'/releases/assets/'+str(asset['id']),headers=dict(headers,Accept='application/octet-stream'))
+              return opener.open(req,timeout=120)
+          rows=api('/releases?per_page=100')
+          transfer=[r for r in rows if r['draft'] and r['name']=='GWEN 1.17.0 Verified Transfer']
+          target=[r for r in rows if r['draft'] and r['name']=='GWEN™ 1.17.0 — Public Beta & Developer Update']
+          if len(transfer)!=1 or len(target)!=1:raise RuntimeError('Expected exactly one transfer and target draft')
+          transfer,target=transfer[0],target[0]
+          assets={r['name']:r for r in api('/releases/'+str(transfer['id'])+'/assets?per_page=100')}
+          with get_asset(assets['transfer-manifest.json']) as r:manifest=json.loads(r.read(65537))
+          if manifest.get('version')!=version:raise RuntimeError('Wrong transfer version')
+          allowed={'GWEN-Public-1.17.0.gwen-update.zip','GWEN-Developer-1.17.0.gwen-update.zip','GWEN-1.17.0-Source.zip','public.json','developer.json','READ-ME-FIRST.txt','BUILD-AND-TEST-REPORT.json','SHA256SUMS.txt','GWEN-Setup-1.16.2-Public-Beta.exe','GWEN-Mobile-0.2.0-Cloud-Candidate-Xcode.zip','GWEN-Mobile-0.2.0-Build-Repair-r5.zip','CREDITS.txt','LICENSE.txt','HOW-TO-USE.txt','VIDEO-PRESETS.txt'}
+          if {r['name'] for r in manifest['files']}!=allowed:raise RuntimeError('Unexpected public file set')
+          # Pin the complete transfer manifest digest in the checked-in workflow.
+          encoded=json.dumps(manifest,sort_keys=True,separators=(',',':')).encode()
+          if hashlib.sha256(encoded).hexdigest()!=os.environ['GWEN_MANIFEST_SHA256']:raise RuntimeError('Transfer description changed')
+          work=pathlib.Path('verified-files');work.mkdir(exist_ok=True)
+          for row in manifest['files']:
+              out=work/row['name'];whole=hashlib.sha256();size=0
+              with out.open('wb') as dest:
+                  for part in row['parts']:
+                      if assets[part['name']]['size']!=part['size'] or part['size']>40*1024*1024:raise RuntimeError('Wrong part size')
+                      digest=hashlib.sha256();got=0
+                      with get_asset(assets[part['name']]) as src:
+                          while block:=src.read(1024*1024):
+                              got+=len(block)
+                              if got>part['size']:raise RuntimeError('Oversized part')
+                              digest.update(block);whole.update(block);dest.write(block);size+=len(block)
+                      if got!=part['size'] or digest.hexdigest()!=part['sha256']:raise RuntimeError('Part integrity failed')
+              if size!=row['size'] or whole.hexdigest()!=row['sha256']:raise RuntimeError('Complete file integrity failed')
+              print('Verified',row['name'],whole.hexdigest(),flush=True)
+          upload=target['upload_url'].split('{')[0]
+          if urllib.parse.urlsplit(upload).hostname!='uploads.github.com':raise RuntimeError('Unexpected upload host')
+          existing={r['name']:r for r in api('/releases/'+str(target['id'])+'/assets?per_page=100')}
+          for row in manifest['files']:
+              if row['name'] in existing:
+                  item=existing[row['name']]
+                  with get_asset(item) as r:
+                      digest=hashlib.sha256()
+                      while block:=r.read(1024*1024):digest.update(block)
+                  if item['size']!=row['size'] or digest.hexdigest()!=row['sha256']:raise RuntimeError('Existing asset differs; no replacement performed')
+                  continue
+              req=urllib.request.Request(upload+'?'+urllib.parse.urlencode({'name':row['name']}),data=(work/row['name']).read_bytes(),headers=dict(headers,**{'Content-Type':'application/octet-stream'}),method='POST')
+              with opener.open(req,timeout=300) as r:item=json.load(r)
+              if item['size']!=row['size'] or item.get('digest') not in (None,'sha256:'+row['sha256']):raise RuntimeError('Uploaded asset differs')
+              print('Uploaded',item['name'],flush=True)
+          # Publish only after every permitted asset is present and verified.
+          api('/releases/'+str(target['id']),'PATCH',{'draft':False,'prerelease':True,'make_latest':'false','tag_name':'v1.17.0','target_commitish':'main'})
+          for name in ('public.json','developer.json'):
+              path='/contents/updates/'+name;old=None
+              try:old=api(path)
+              except urllib.error.HTTPError as error:
+                  if error.code!=404:raise
+              body={'message':'Publish verified GWEN 1.17.0 '+name+' update feed','content':base64.b64encode((work/name).read_bytes()).decode(),'branch':'main'}
+              if old:body['sha']=old['sha']
+              api(path,'PUT',body)
+          print('GWEN 1.17.0 release and both update feeds published. Private transfer draft retained; no assets deleted.')
