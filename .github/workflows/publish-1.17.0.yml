@@ -11,7 +11,7 @@ jobs:
       contents: write
     env:
       GH_TOKEN: ${{ github.token }}
-      GWEN_MANIFEST_SHA256: 91987ef71485b354f694d8971b0a50fdeeafd137e9b319ab6f6ea5edc683b3a8
+      GWEN_MANIFEST_SHA256: 2070532d1ee5c04edff63fafbc627c544a07696445a62ea7ece5696058c9ce4d
     steps:
       - name: Verify all transfer files, publish release, update channel feeds
         shell: python
@@ -39,13 +39,13 @@ jobs:
               return opener.open(req,timeout=120)
           rows=api('/releases?per_page=100')
           transfer=[r for r in rows if r['draft'] and r['name']=='GWEN 1.17.0 Verified Transfer']
-          target=[r for r in rows if r['draft'] and r['name']=='GWEN™ 1.17.0 — Public Beta & Developer Update']
+          target=[r for r in rows if r['draft'] and r['name']=='GWENâ„¢ 1.17.0 â€” Public Beta & Developer Update']
           if len(transfer)!=1 or len(target)!=1:raise RuntimeError('Expected exactly one transfer and target draft')
           transfer,target=transfer[0],target[0]
           assets={r['name']:r for r in api('/releases/'+str(transfer['id'])+'/assets?per_page=100')}
-          with get_asset(assets['transfer-manifest.json']) as r:manifest=json.loads(r.read(65537))
+          with get_asset(assets['transfer-manifest-v2.json']) as r:manifest=json.loads(r.read(65537))
           if manifest.get('version')!=version:raise RuntimeError('Wrong transfer version')
-          allowed={'GWEN-Public-1.17.0.gwen-update.zip','GWEN-Developer-1.17.0.gwen-update.zip','GWEN-1.17.0-Source.zip','public.json','developer.json','READ-ME-FIRST.txt','BUILD-AND-TEST-REPORT.json','SHA256SUMS.txt','GWEN-Setup-1.16.2-Public-Beta.exe','GWEN-Mobile-0.2.0-Cloud-Candidate-Xcode.zip','GWEN-Mobile-0.2.0-Build-Repair-r5.zip','CREDITS.txt','LICENSE.txt','HOW-TO-USE.txt','VIDEO-PRESETS.txt'}
+          allowed={'GWEN-Public-1.17.0.gwen-update.zip','GWEN-Developer-1.17.0.gwen-update.zip','GWEN-1.17.0-Source.zip','public.json','developer.json','READ-ME-FIRST.txt','BUILD-AND-TEST-REPORT.json','SHA256SUMS.txt','GWEN-Setup-1.16.2-Public-Beta.exe','GWEN-Mobile-0.2.0-Cloud-Candidate-Xcode.zip','GWEN-Mobile-0.2.0-Build-Repair-r6.zip','CREDITS.txt','LICENSE.txt','HOW-TO-USE.txt','VIDEO-PRESETS.txt'}
           if {r['name'] for r in manifest['files']}!=allowed:raise RuntimeError('Unexpected public file set')
           # Pin the complete transfer manifest digest in the checked-in workflow.
           encoded=json.dumps(manifest,sort_keys=True,separators=(',',':')).encode()
